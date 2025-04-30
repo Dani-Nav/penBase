@@ -172,7 +172,7 @@ async function uploadFile(file, index) {
         const path = `${userId}/${uniqueFileName}`;
         
         // Preparar o upload
-        const url = `https://supabase.co/storage/v1/object/${bucketName}/${path}`;
+        const url = `${supabaseUrl}/storage/v1/object/${bucketName}/${path}`;
         
         // Criar o objeto XMLHttpRequest para monitorar o progresso
         const xhr = new XMLHttpRequest();
