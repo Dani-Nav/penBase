@@ -172,7 +172,8 @@ async function uploadFile(file, index) {
         const path = `${userId}/${uniqueFileName}`;
         
         // Preparar o upload
-        const url = `${supabaseUrl}/storage/v1/object/${bucketName}/${path}`;
+        const url = `${supabaseUrl}/storage/v1/object/${bucketName}?path=${path}`; // ✅ correto
+
         
         // Criar o objeto XMLHttpRequest para monitorar o progresso
         const xhr = new XMLHttpRequest();
