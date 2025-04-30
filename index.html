@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyCloud - Armazenamento Seguro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .drop-area:hover, .drop-area.highlight {
+            border-color: #6366F1;
+            background-color: #EEF2FF;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #F3F4F6;
+        }
+        .progress-bar {
+            height: 4px;
+            background-color: #E5E7EB;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #6366F1;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-indigo-600">KeyCloud</h1>
+            <p class="text-gray-600">Armazenamento seguro conectado ao seu pendrive</p>
+        </header>
+
+        <!-- Mensagem de status -->
+        <div id="status-message" class="hidden mb-4 p-4 rounded-md"></div>
+
+        <!-- Container principal -->
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+            <div id="user-info" class="mb-6 pb-4 border-b border-gray-200">
+                <p><span class="font-medium">Bucket:</span> <span id="bucket-name">Carregando...</span></p>
+                <p><span class="font-medium">Usuário:</span> <span id="user-id">Carregando...</span></p>
+            </div>
+
+            <!-- Área de upload -->
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-3">Upload de Arquivos</h2>
+                <div id="drop-area" class="drop-area">
+                    <div class="mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                    </div>
+                    <p class="text-gray-700 mb-2">Arraste e solte arquivos aqui, ou</p>
+                    <button id="file-select-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                        Selecionar Arquivos
+                    </button>
+                    <input type="file" id="file-input" class="hidden" multiple>
+                </div>
+            </div>
+
+            <!-- Lista de arquivos -->
+            <div id="files-container" class="mb-6 hidden">
+                <h3 class="text-lg font-medium mb-2">Arquivos para upload</h3>
+                <div id="file-list" class="space-y-2"></div>
+                <div class="mt-4">
+                    <button id="upload-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors mr-2">
+                        Iniciar Upload
+                    </button>
+                    <button id="cancel-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status do upload -->
+            <div id="upload-status" class="hidden">
+                <h3 class="text-lg font-medium mb-2">Status do Upload</h3>
+                <div id="upload-progress" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>KeyCloud © 2025 - Todos os direitos reservados</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
