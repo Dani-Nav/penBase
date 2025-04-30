@@ -45,6 +45,12 @@ function initializeApp() {
     // Exibir informações do usuário na interface
     bucketNameElement.textContent = bucketName;
     userIdElement.textContent = userId;
+    
+    // Exibir dados de debug
+    console.log('Inicializado com:');
+    console.log('- Bucket:', bucketName);
+    console.log('- User ID:', userId);
+    console.log('- Token válido:', !!token);
 }
 
 // Configura os event listeners
@@ -171,11 +177,11 @@ async function uploadFile(file, index) {
         const uniqueFileName = `${timestamp}_${file.name}`;
         const path = `${userId}/${uniqueFileName}`;
         
-        // Preparar o upload
-        const url = `${supabaseUrl}/storage/v1/object/${bucketName}?path=${encodeURIComponent(path)}`; // ✅ CERTO
-
-
-
+        // CORRIGIDO: Preparar o upload com a URL no formato correto
+        // O formato correto da URL é: https://[PROJECT_ID].supabase.co/storage/v1/object/[BUCKET_NAME]/[FILE_PATH]
+        const url = `${supabaseUrl}/storage/v1/object/${bucketName}/${encodeURIComponent(path)}`;
+        
+        console.log(`Tentando upload para: ${url}`);
         
         // Criar o objeto XMLHttpRequest para monitorar o progresso
         const xhr = new XMLHttpRequest();
@@ -191,16 +197,20 @@ async function uploadFile(file, index) {
         
         // Configurar o evento de conclusão
         xhr.addEventListener('load', () => {
+            console.log(`Status do upload: ${xhr.status} ${xhr.statusText}`);
+            console.log(`Resposta: ${xhr.responseText}`);
+            
             if (xhr.status >= 200 && xhr.status < 300) {
                 updateProgress(index, 100);
                 checkAllUploadsComplete();
             } else {
-                handleUploadError(index, xhr.statusText);
+                handleUploadError(index, `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`);
             }
         });
         
         // Configurar o evento de erro
         xhr.addEventListener('error', () => {
+            console.error('Erro na conexão durante o upload');
             handleUploadError(index, 'Erro na conexão');
         });
         
@@ -213,9 +223,14 @@ async function uploadFile(file, index) {
         xhr.open('POST', url, true);
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
         xhr.setRequestHeader('Content-Type', file.type);
+        
+        // Debug
+        console.log(`Enviando arquivo: ${file.name} (${file.type}), tamanho: ${formatFileSize(file.size)}`);
+        
         xhr.send(file);
         
     } catch (error) {
+        console.error('Erro ao fazer upload:', error);
         handleUploadError(index, error.message);
     }
 }
