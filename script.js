@@ -17,7 +17,7 @@ const userIdElement = document.getElementById('user-id');
 
 // Variáveis globais
 let filesToUpload = [];
-let supabaseUrl = 'https://supabase.co';
+let supabaseUrl = 'https://ocnpwepvwsuvjiucrdqe.supabase.co';
 let token = '';
 let userId = '';
 let bucketName = '';
