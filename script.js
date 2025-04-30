@@ -172,7 +172,8 @@ async function uploadFile(file, index) {
         const path = `${userId}/${uniqueFileName}`;
         
         // Preparar o upload
-        const url = `${supabaseUrl}/storage/v1/object/${bucketName}?path=${path}`;
+        const url = `${supabaseUrl}/storage/v1/object/${bucketName}?path=${encodeURIComponent(path)}`; // ✅ CERTO
+
 
 
         
